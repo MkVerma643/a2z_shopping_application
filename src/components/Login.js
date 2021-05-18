@@ -1,82 +1,123 @@
-import React, { Fragment } from 'react'
-import Header from "./Header"
-import Footer from "./Footer"
-import { Link } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import React, { useState, useEffect, Fragment } from "react";
+import Header from "./Header";
+import Footer from "./Footer";
+import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./UI/Login.css";
+import { emailRegrex } from "./constants/Regrex";
 
 function Login() {
-    function validateEmail(email) 
-    {
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
+  const intialValues = { email: "", password: "" };
+
+  const [formValues, setFormValues] = useState(intialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    console.log(formValues);
+  };
+
+  //input change handler
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  //form submission handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  //form validation handler
+  const validate = (values) => {
+    let errors = {};
+    const regex = emailRegrex;
+
+    if (!values.email) {
+      errors.email = "Email id is required";
+    } else if (!regex.test(values.email)) {
+      errors.email = "Email is not valid";
     }
 
-    // let getEmail = (event)=>{ 
-    //     setUser({
-    //         ...user,
-    //             email : event.target.value
-    //         }); 
-    //         user.email=event.target.value; 
-    //     }
-       
-    // let getPassword = (event)=>{ 
-    //      setUser({
-    //          ...user,
-    //         password :  event.target.value
-    //     }) 
-    // }
+    if (!values.password) {
+      errors.password = "Password cannot be blank";
+    } else if (values.password.length < 8) {
+      errors.password = "Password length must be more than 8 characters";
+    }
 
-    // let login =()=>{
-    //     console.log(user)
-    //    if(!user.email || !user.password){
-    //     setMessage({
-    //         error: "Enter Email And Password"
-    //     }); 
-    //    }
-    //    else if (!validateEmail(user.email)){
-    //     setMessage({
-    //         error:  `A Valid Email Please`
-    //     }); 
-    //    }
-    //    else{}
+    return errors;
+  };
 
-    return (
-        <Fragment>
-        <Header />
-        <br></br>
-        <div class="global-container" >
-	        <div class="card login-form">
-	        <div class="card-body">
-            <center><h2 class="card-title text-center">Login</h2></center>
-                <div className="container" style={{width:'50%'}}>
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input type="email" className="form-control form-control-lg" onChange="{getEmail}"></input>
-                    </div>
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" className="form-control form-control-lg" onChange="{getPassword}"></input> 
-                    </div>
-                    <div className="text-danger">
-                        {console.error()}
-                    </div>
-                    <Link to="/resetpassword" >Forgot Password?</Link>
-                    <br></br>
-                    <br></br>
-                    <button className="btn btn-primary btn-block" onClick="{login}">Login</button>
-                    <br></br>
-                    <div className="sign-up">
-                        <Link to="/signup">New User? SignUp Here</Link>
-                    </div>
-                    <br></br>
-                 </div>
-                 </div>
-                 </div>
-                 </div>
-        <Footer />
-        </Fragment>
-    )
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmitting) {
+      submit();
+    }
+  }, [formErrors]);
+
+  return (
+    <Fragment>
+      <Header />
+      <br></br>
+      <center>
+        <h2 className="card-title text-center">Login</h2>
+      </center>
+      <div className="container">
+        {Object.keys(formErrors).length === 0 && isSubmitting && (
+          <span className="success-msg">Form submitted successfully</span>
+        )}
+        <form onSubmit={handleSubmit} noValidate>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formValues.email}
+              onChange={handleChange}
+              placeholder="Email id"
+              className="form-control form-control-lg"
+              autoFocus
+            ></input>
+            {formErrors.email && (
+              <span className="error">{formErrors.email}</span>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              value={formValues.password}
+              onChange={handleChange}
+              className="form-control form-control-lg"
+            ></input>
+            {formErrors.password && (
+              <span className="error">{formErrors.password}</span>
+            )}
+          </div>
+          <Link to="/resetpassword">Forgot Password?</Link>
+          <br></br>
+          <br></br>
+          <button className="btn btn-primary btn-block" type="submit">
+            Login
+          </button>
+          <br></br>
+          <div className="sign-up">
+            <Link to="/signup">New User? SignUp Here</Link>
+          </div>
+          <br></br>
+          <br></br>
+          <br></br>
+        </form>
+      </div>
+      <Footer />
+    </Fragment>
+  );
 }
 
-export default Login
+export default Login;
