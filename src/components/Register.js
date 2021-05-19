@@ -8,8 +8,6 @@ import { emailRegrex } from "./constants/Regrex";
 import Select from "react-select";
 
 function Register() {
-  const [selectedOption, set_selectedOption] = useState("");
-
   const intialValues = {
     firstName: "",
     lastName: "",
@@ -29,10 +27,19 @@ function Register() {
   const submit = () => {
     console.log(formValues);
   };
+  // select state
+  const [selectedOption, set_selectedOption] = useState("");
   //input change handler
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (e, selectedOption) => {
+    if (selectedOption) {
+      set_selectedOption(selectedOption);
+      var name = "select";
+      var value = "mumbai";
+    } else {
+      var { name, value } = e.target;
+    }
     setFormValues({ ...formValues, [name]: value });
+    console.log(formValues);
   };
 
   //form submission handler
@@ -42,6 +49,12 @@ function Register() {
     setIsSubmitting(true);
   };
 
+  const options = [
+    { value: "mumbai", label: "Mumbai", name: "Mumbai" },
+    { value: "pune", label: "Pune", name: "Pune" },
+    { value: "nagpur", label: "Nagpur", name: "Nagpur" },
+  ];
+
   //form validation handler
   const validate = (values) => {
     let errors = {};
@@ -49,8 +62,13 @@ function Register() {
 
     if (!values.firstName) {
       errors.firstName = "First Name cannot be blank";
-    } else if (values.password.length < 2) {
-      errors.password = "First Name must be more than 2 characters";
+    } else if (values.firstName.length < 2) {
+      errors.firstName = "First Name must be more than 2 characters";
+    }
+    if (!values.lastName) {
+      errors.lastName = "Last Name cannot be blank";
+    } else if (values.lastName.length < 2) {
+      errors.lastName = "Last Name must be more than 2 characters";
     }
     if (!values.email) {
       errors.email = "Email id is required";
@@ -62,6 +80,30 @@ function Register() {
     } else if (values.password.length < 8) {
       errors.password = "Password length must be more than 8 characters";
     }
+    if (!values.birthDate) {
+      errors.birthDate = "Birth Date cannot be blank";
+    } else if (values.password.length < 8) {
+      errors.birthDate = "InValid Birth Date";
+    }
+    if (!values.phoneNumber) {
+      errors.phoneNumber = "Phone Number cannot be blank";
+    } else if (
+      values.phoneNumber.length < 10 ||
+      values.phoneNumber.length > 10
+    ) {
+      errors.phoneNumber = "Only 10 Digit Mobile Number";
+    }
+    if (!values.gender) {
+      errors.gender = "Please Select Gender";
+    }
+    if (!values.address) {
+      errors.address = "Address cannot be blank";
+    } else if (values.address.length < 2) {
+      errors.address = "Address length must be more then 10 characters";
+    }
+    if (!values.select) {
+      errors.select = "Select City";
+    }
 
     return errors;
   };
@@ -72,28 +114,13 @@ function Register() {
     }
   }, [formErrors]);
 
-  //   select handleChange
-  function handleChangeSelect(_selectedOption) {
-    set_selectedOption(_selectedOption);
-    console.log(_selectedOption);
-  }
-  const options = [
-    { value: "mumbai", label: "Mumbai" },
-    { value: "pune", label: "Pune" },
-    { value: "nagpur", label: "Nagpur" },
-  ];
-  //   gender changeValue
-  function onChangeValue(event) {
-    console.log(event.target.value);
-  }
-
   return (
     <Fragment>
       <Header />
       <center>
-        <h3 className="card-title text-center">Sign Up</h3>
+        <h2 className="card-title text-center">Sign Up</h2>
       </center>
-      <div className="container ">
+      <div className="container">
         {Object.keys(formErrors).length === 0 && isSubmitting && (
           <span className="success-msg">Form submitted successfully</span>
         )}
@@ -104,12 +131,16 @@ function Register() {
             </label>
             <input
               type="text"
+              name="firstName"
               id="firstName"
               placeholder="First Name"
               className="form-control"
               onChange={handleChange}
               autoFocus
             />
+            {formErrors.firstName && (
+              <span className="error">{formErrors.firstName}</span>
+            )}
           </div>
 
           <label htmlFor="lastName" className="col-sm-3 control-label">
@@ -119,10 +150,14 @@ function Register() {
             <input
               type="text"
               id="lastName"
+              name="lastName"
               placeholder="Last Name"
               className="form-control"
               onChange={handleChange}
             />
+            {formErrors.lastName && (
+              <span className="error">{formErrors.lastName}</span>
+            )}
           </div>
           <label htmlFor="email" className="col-sm-3 control-label">
             Email*{" "}
@@ -131,11 +166,15 @@ function Register() {
             <input
               type="email"
               id="email"
+              name="email"
               placeholder="Email"
               className="form-control"
               name="email"
               onChange={handleChange}
             />
+            {formErrors.email && (
+              <span className="error">{formErrors.email}</span>
+            )}
           </div>
           <label htmlFor="password" className="col-sm-3 control-label">
             Password*
@@ -144,10 +183,14 @@ function Register() {
             <input
               type="password"
               id="password"
+              name="password"
               placeholder="Password"
               className="form-control"
               onChange={handleChange}
             />
+            {formErrors.password && (
+              <span className="error">{formErrors.password}</span>
+            )}
           </div>
 
           <label htmlFor="birthDate" className="col-sm-6 control-label">
@@ -157,28 +200,36 @@ function Register() {
             <input
               type="date"
               id="birthDate"
+              name="birthDate"
               className="form-control"
               onChange={handleChange}
             />
+            {formErrors.birthDate && (
+              <span className="error">{formErrors.birthDate}</span>
+            )}
           </div>
           <label htmlFor="phoneNumber" className="col-sm-6 control-label">
             Phone number*{" "}
           </label>
           <div className="form-group">
             <input
-              type="phoneNumber"
+              type="number"
               id="phoneNumber"
+              name="phoneNumber"
               placeholder="Phone number"
               className="form-control"
               onChange={handleChange}
             />
+            {formErrors.phoneNumber && (
+              <span className="error">{formErrors.phoneNumber}</span>
+            )}
           </div>
 
           <div className="form-group">
             <label className="control-label col-sm-3">Gender*</label>
             <div className="row">
               <div className="col-sm-2"></div>
-              <div className="col-sm-6" onChange={onChangeValue}>
+              <div className="col-sm-6" onChange={handleChange}>
                 <input type="radio" id="maleRadio" name="gender" value="Male" />
                 Male &nbsp;&nbsp;&nbsp;
                 <input
@@ -190,6 +241,9 @@ function Register() {
                 Female
               </div>
             </div>
+            {formErrors.gender && (
+              <span className="error">{formErrors.gender}</span>
+            )}
           </div>
 
           <label htmlFor="address" className="col-sm-6 control-label">
@@ -199,21 +253,30 @@ function Register() {
             <textarea
               type="address"
               id="address"
+              name="address"
               placeholder="Address"
               className="form-control"
+              onChange={handleChange}
             />
+            {formErrors.address && (
+              <span className="error">{formErrors.address}</span>
+            )}
           </div>
           <label htmlFor="select" className="col-sm-6 control-label">
             Select City*{" "}
           </label>
           <div className="form-group">
             <Select
+              id="select"
               name="select"
-              value={selectedOption}
+              type="select"
               options={options}
-              onInputChange={handleChangeSelect}
-              onChange={handleChangeSelect}
+              onInputChange={handleChange}
+              onChange={handleChange}
             />
+            {formErrors.select && (
+              <span className="error">{formErrors.select}</span>
+            )}
           </div>
           <div className="form-group">
             <div className="col-sm-9 col-sm-offset-3">
@@ -223,6 +286,10 @@ function Register() {
           <button className="btn btn-primary btn-block" type="submit">
             Register
           </button>
+          <br></br>
+          <div className="sign-up">
+            <Link to="/login">Already Registered? Login Here</Link>
+          </div>
           <br></br>
         </form>
       </div>

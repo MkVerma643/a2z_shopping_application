@@ -1,6 +1,11 @@
-.container{
-    max-width: 600px;
+.container {
+  max-width: 600px;
 }
-.error{
-    color: #e63946;
+.error {
+  color: #e63946;
+}
+.success-msg {
+  color: darkgreen;
+  margin: 30%;
+  font-size: large;
 }
