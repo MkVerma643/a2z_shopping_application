@@ -5,16 +5,47 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./UI/Login.css";
 import { emailRegrex } from "./constants/Regrex";
+import axios from "axios";
+import { connect } from "react-redux";
+import { BASE_URL } from "./constants/Base_url";
 
-function Login() {
+function Login(props) {
   const intialValues = { email: "", password: "" };
 
   const [formValues, setFormValues] = useState(intialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  if (props.isLoggedin) {
+    props.history.push("/");
+  }
+
   const submit = () => {
     console.log(formValues);
+    let apiurl = BASE_URL + `api/auth/login`;
+    axios({
+      url: apiurl,
+      method: "post",
+      data: formValues,
+    }).then(
+      (response) => {
+        console.log(formValues);
+        console.log("response from Login API", response.data);
+        props.dispatch({
+          type: "LOGIN",
+          payload: response.data,
+        });
+        props.history.push("/");
+        // props.set(true);
+        // props.userName(user.name);
+        // console.log(apiurl);
+      },
+      (error) => {
+        console.log(formValues);
+        console.log("error from Login API", error);
+        // console.log(apiurl);
+      }
+    );
   };
 
   //input change handler
@@ -43,8 +74,8 @@ function Login() {
 
     if (!values.password) {
       errors.password = "Password cannot be blank";
-    } else if (values.password.length < 8) {
-      errors.password = "Password length must be more than 8 characters";
+    } else if (values.password.length < 6) {
+      errors.password = "Password length must be more than 6 characters";
     }
 
     return errors;
@@ -120,4 +151,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default connect()(Login);

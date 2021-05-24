@@ -1,29 +1,29 @@
-import React from 'react'
-import "./UI/Product.css"
+import React from "react";
+import "./UI/Product.css";
 
 function Product(props) {
-    return (
-        <div className="product">
-            <div className="product_info">
-                <p>{props.title}</p>
-                <p className="product_">
-                    <small>₹</small>
-                    <strong>{props.price}</strong>
-                </p>
-                <div className="product_rating">
-                    {
-                        Array(props.rating)
-                        .fill()
-                        .map((_)=>(
-                            <p>⭐</p>
-                        ))
-                    }
-                </div>
-            </div>
-            <img src={props.image} alt="product image" />
-            <button>Add to backet</button>
+  console.log(props.data);
+  return (
+    <div className="product" key={props.data._id}>
+      <div className="product_info">
+        <p>{props.data.name}</p>
+        <p className="product_">
+          <small>₹</small>
+          <strong>{props.data.price}</strong>
+        </p>
+        <div className="product_rating">
+          {/* {Array(props.avgRating)
+            .fill()
+            .map((_) => ( */}
+          <p>⭐</p>
+          {/* ))} */}
+          {props.data.avgRating}
         </div>
-    )
+      </div>
+      <img src={props.data.mainImage} alt="product image" />
+      <button>Add to backet</button>
+    </div>
+  );
 }
 
-export default Product
+export default Product;
