@@ -4,6 +4,7 @@ import logo from "../logo.png";
 import "./UI/Header.css";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import { connect } from "react-redux";
 
 function Header(props) {
   return (
@@ -23,17 +24,17 @@ function Header(props) {
       <div className="header_nav">
         <Link to="/login" className="header_link">
           <div className="header_option">
-            <span className="header_option_line1">Hello,</span>
+            <span className="header_option_line1">Hello,{props.user}</span>
             <span className="header_option_line2">SignIn</span>
           </div>
         </Link>
 
-        <Link to="/orders" className="header_link">
+        {/* <Link to="/orders" className="header_link">
           <div className="header_option">
             <span className="header_option_line1">Your</span>
             <span className="header_option_line2">Orders</span>
           </div>
-        </Link>
+        </Link> */}
 
         <Link to="/profile" className="header_link">
           <div className="header_option">
@@ -57,4 +58,10 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default connect(function (state, props) {
+  console.log("state initially", state);
+  return {
+    user: state?.user?.name,
+    // loginstatus: state["isloggedin"],
+  };
+})(Header);

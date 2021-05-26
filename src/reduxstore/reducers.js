@@ -2,13 +2,13 @@ var a2z = function (state, action) {
   switch (action.type) {
     //LOGIN
     case "LOGIN": {
-      console.log("here we have to write logic for login");
+      console.log("Reducers Login Case");
       state = { ...state };
       state["isfetching"] = true;
       return state;
     }
     case "LOGIN_SUCCESS": {
-      // console.log("here we have to write logic for login")
+      console.log("Login Success Case");
       state = { ...state };
       state["isLoggedin"] = true;
       state["user"] = action.payload;
@@ -17,6 +17,7 @@ var a2z = function (state, action) {
       return state;
     }
     case "LOGIN_FAILURE": {
+      console.log("Login Failure Case");
       state = { ...state };
       state["isfetching"] = false;
       state["isloginerror"] = true;
@@ -24,7 +25,7 @@ var a2z = function (state, action) {
     }
     //
     case "LOGOUT": {
-      // console.log("here we have to write logic for logout")
+      console.log("redux logic for logout");
       state = { ...state };
       localStorage.clear();
       delete state["isLoggedin"];
@@ -32,32 +33,32 @@ var a2z = function (state, action) {
       return state;
     }
     case "CART": {
-      // console.log("redux cart")
+      console.log("redux cart");
       state = { ...state };
       state["cart"] = { data: action.payload };
       return state;
     }
     case "UPDATE-CART": {
-      // console.log("redux update cart",state.updatecart)
+      console.log("redux update cart", state.updatecart);
       state = { ...state };
       state["updatecart"] = action.payload;
       return state;
     }
     case "ADDRESS": {
-      // console.log("redux Session")
+      console.log("redux address Session");
       state = { ...state };
       state["isaddress"] = true;
       state["address"] = action.payload;
       return state;
     }
     case "CHECKOUT": {
-      // console.log("redux Session")
+      console.log("redux checkout Session");
       state = { ...state };
       state["page"] = action.payload;
       return state;
     }
     case "ORDERS": {
-      // console.log("redux Session")
+      console.log("redux orders Session");
       state = { ...state };
       state["order"] = action.payload;
       return state;

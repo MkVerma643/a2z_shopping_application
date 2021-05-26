@@ -2,7 +2,7 @@ import React from "react";
 import Product from "./components/Product";
 import "./Home.css";
 import Slider from "./components/Slider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import axios from "axios";
 import Search from "./components/Search";
 import { BASE_URL } from "./components/constants/Base_url";
@@ -31,20 +31,21 @@ function Home() {
   }, []);
 
   return (
-    <div>
-      <Header />
-      <Slider />
+    <Fragment>
+      <div>
+        <Header />
+        <Slider />
 
-      <div className="home_row">
-        {/* {console.log(products)} */}
-        {products?.length > 0 &&
-          products.map((product, index) => {
-            return <Product data={product} key={product._id} />;
-          })}
+        <div className="home_row">
+          {/* {console.log(products)} */}
+          {products?.length > 0 &&
+            products.map((product, index) => {
+              return <Product data={product} key={product._id} />;
+            })}
+        </div>
       </div>
-
       <Footer />
-    </div>
+    </Fragment>
   );
 }
 

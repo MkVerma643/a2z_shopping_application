@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
+import { Link } from "react-router-dom";
 
 function ResetPassword(props) {
   let [message, setMessage] = useState({});
@@ -79,6 +80,10 @@ function ResetPassword(props) {
           <button className="form-control btn btn-primary">Reset Link</button>
           <br />
           <br />
+          <div className="sign-up">
+            <Link to="/login">Already Registered? Login Here</Link>
+          </div>
+          <br />
           {message.success && (
             <span className="alert alert-success">{message.success}</span>
           )}
@@ -87,7 +92,6 @@ function ResetPassword(props) {
           )}
         </form>
       </center>
-      <br></br>
       <br></br>
       <br></br>
       <br></br>
