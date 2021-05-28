@@ -9,7 +9,7 @@ import Select from "react-select";
 import axios from "axios";
 import { BASE_URL } from "./constants/Base_url";
 
-function Register() {
+function Register(props) {
   const intialValues = {
     first_name: "",
     last_name: "",
@@ -44,7 +44,8 @@ function Register() {
       data: user,
     }).then(
       (response) => {
-        console.log(user);
+        // console.log(user);
+        props.history.push("/login");
         console.log("response from signup API", response.data);
       },
       (error) => {

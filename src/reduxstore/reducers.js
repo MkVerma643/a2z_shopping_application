@@ -32,6 +32,18 @@ var a2z = function (state, action) {
       delete state["user"];
       return state;
     }
+    case "ALL_PRODUCT": {
+      console.log("Reducers Products State");
+      state = { ...state };
+      state["products"] = { data: action.payload };
+      return state;
+    }
+    case "PRODUCT_DETAILS": {
+      console.log("Reducers Products Details State");
+      state = { ...state };
+      state["products_details"] = { data: action.payload };
+      return state;
+    }
     case "CART": {
       console.log("redux cart");
       state = { ...state };

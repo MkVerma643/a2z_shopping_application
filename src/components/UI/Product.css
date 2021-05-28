@@ -5,6 +5,7 @@
   margin: 10px;
   background-color: white;
   max-width: 420px;
+  color: inherit;
 }
 .product_price {
   margin-top: 5px;
@@ -27,4 +28,6 @@
   background-color: #f0c14b;
   border: 1px solid;
   border-color: tomato;
+  text-decoration: none;
+  color: inherit;
 }

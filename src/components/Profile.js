@@ -18,7 +18,7 @@ function Profile(props) {
             <div className="jumbotron">
               <ul style={{ listStyle: "none", textAlign: "left" }}>
                 <li> Name: {props?.user?.name}</li>
-                <li> Email: {props?.user?.email}</li>
+                <li> Email: {localStorage.email}</li>
               </ul>
             </div>
           </div>

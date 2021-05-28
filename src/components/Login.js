@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./UI/Login.css";
 import { emailRegrex } from "./constants/Regrex";
@@ -16,6 +16,8 @@ function Login(props) {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  var user = {};
+  var [user, setUser] = useState({});
   if (props.isLoggedin) {
     props.history.push("/");
   }
@@ -29,8 +31,9 @@ function Login(props) {
       data: formValues,
     }).then(
       (response) => {
-        console.log(formValues);
         console.log("response from Login API", response.data);
+        localStorage.token = response.data.data.token;
+        localStorage.email = response.data.data.email;
         props.dispatch({
           type: "LOGIN",
           payload: response.data,
@@ -151,4 +154,12 @@ function Login(props) {
   );
 }
 
-export default connect()(Login);
+Login = withRouter(Login);
+export default connect(function (state, props) {
+  console.log("states in login component", state);
+  return {
+    loginError: state?.isloginerror,
+    logging: state?.isfetching,
+    isLoggedin: state?.isLoggedin,
+  };
+})(Login);

@@ -8,13 +8,11 @@ import Search from "./components/Search";
 import { BASE_URL } from "./components/constants/Base_url";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Pagination from "./components/Pagination";
+import { connect } from "react-redux";
 
-function Home() {
+function Home(props) {
   let [products, setProducts] = useState({});
-  let [searchProduct, setSearchProduct] = useState({});
-  let [userDetails, setUserDetails] = useState({});
-  let [login, setlogin] = useState(false);
-  let [name, setName] = useState("");
 
   useEffect(() => {
     axios({
@@ -23,6 +21,10 @@ function Home() {
     }).then(
       (response) => {
         setProducts(response.data.data.docs);
+        props.dispatch({
+          type: "ALL_PRODUCT",
+          payload: response.data.data.docs,
+        });
       },
       (error) => {
         console.log(error);
@@ -49,4 +51,6 @@ function Home() {
   );
 }
 
-export default Home;
+export default connect(function (state, props) {
+  console.log("states in Home Components", state);
+})(Home);
