@@ -12,7 +12,7 @@ import { Fragment } from "react";
 function ProductDetails(props) {
   const [productDetail, setProductDetail] = useState([]);
   let params = useParams();
-  var pro_id = params._id;
+  let pro_id = params._id;
   console.log(pro_id);
 
   const showAllProducts = () => {
@@ -46,12 +46,15 @@ function ProductDetails(props) {
 
   var addToCart = (productId) => {
     if (localStorage.token) {
+      let addToCartUrl = BASE_URL + `api/cart`;
+      console.log("user Token", localStorage.token);
       var userToken = localStorage.token;
-      let addToCartUrl = BASE_URL + "api/cart";
       const data = {
         productId,
         quantity: "1",
       };
+      console.log(productId, userToken);
+      console.log("function add to cart called");
       axios({
         method: "post",
         url: addToCartUrl,
@@ -68,8 +71,10 @@ function ProductDetails(props) {
               type: "UPDATE_CART_TRUE",
               cart_update: true,
             });
+            console.log("product added in cart");
           } else {
             toast.warning("Product Already added in your cart");
+            console.log("product Already added in cart");
           }
         },
         (error) => {

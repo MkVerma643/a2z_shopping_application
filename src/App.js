@@ -14,33 +14,9 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import store from "./reduxstore/store";
 import ProductDetails from "./components/ProductDetails";
+import Checkout from "./components/Checkout";
 
 function App(props) {
-  if (localStorage.token && props.isLoggedin !== true) {
-    axios({
-      method: "get",
-      url: BASE_URL + "getuserdetails",
-      headers: {
-        authtoken: localStorage.token,
-      },
-    }).then(
-      (response) => {
-        console.log("API HIT: User Details");
-        if (response.data.data) {
-          store.dispatch({
-            type: "LOGIN_SUCCESS",
-            payload: response.data.data,
-          });
-        } else {
-          localStorage.removeItem("token");
-        }
-      },
-      (error) => {
-        localStorage.removeItem("token");
-        console.log("get user details api. Error: ", error);
-      }
-    );
-  }
   let [login, setlogin] = useState(false);
   let [name, setName] = useState("");
 
@@ -61,6 +37,7 @@ function App(props) {
           <Route path="/orders" component={Orders}></Route>
           <Route path="/profile" component={Profile}></Route>
           <Route path="/cart" component={Cart}></Route>
+          <Route path="/checkout" component={Checkout}></Route>
           <Route exact path="/search" component={Search}></Route>
 
           <Route path="/">

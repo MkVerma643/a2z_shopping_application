@@ -4,6 +4,7 @@ var a2z = function (state, action) {
     case "LOGIN": {
       console.log("Reducers Login Case");
       state = { ...state };
+      state["isLoggedin"] = true;
       state["isfetching"] = true;
       return state;
     }

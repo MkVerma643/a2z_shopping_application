@@ -6,6 +6,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { connect } from "react-redux";
 import { useState, useEffect } from "react";
+import { BASE_URL } from "./constants/Base_url";
+import axios from "axios";
 
 function Header(props) {
   var [search, setSearch] = useState("");
@@ -25,6 +27,33 @@ function Header(props) {
 
     console.log(props);
   };
+
+  var userToken = localStorage.token;
+  useEffect(() => {
+    console.log(userToken);
+    axios({
+      method: "get",
+      url: BASE_URL + `api/cart`,
+      headers: {
+        Authorization: userToken,
+      },
+    }).then(
+      (response) => {
+        console.log("API HIT: Cart success");
+        props.dispatch({
+          type: "CART",
+          payload: response.data.data,
+        });
+        props.dispatch({
+          type: "UPDATE-CART",
+          payload: true,
+        });
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
+  }, []);
 
   return (
     <nav className="header">
@@ -90,7 +119,11 @@ function Header(props) {
         <Link to="/cart" className="header_link">
           <div className="header_optionBasket">
             <span className="header_option_line2">
-              <ShoppingCartIcon /> 0
+              <ShoppingCartIcon /> (
+              {props?.cart?.data?.products?.length
+                ? props.cart.data.products.length
+                : 0}
+              ){console.log(props.cart)}
             </span>
           </div>
         </Link>
@@ -105,6 +138,8 @@ export default connect(function (state, props) {
   console.log("state initially", state);
   return {
     user: state?.user?.name,
-    // loginstatus: state["isloggedin"],
+    loginstatus: state?.isLoggedin,
+    cart: state?.cart,
+    updatecart: state?.updatecart,
   };
 })(Header);
