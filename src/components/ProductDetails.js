@@ -8,6 +8,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { toast } from "react-toastify";
 import { Fragment } from "react";
+import "./UI/Product.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function ProductDetails(props) {
   const [productDetail, setProductDetail] = useState([]);
@@ -90,19 +92,38 @@ function ProductDetails(props) {
     <Fragment>
       <Header />
       <div className="jumbotron">
-        {/* {error ? <p className="alert-warning">Please Login First</p> : null} */}
         <div className="row">
-          <div className="col-md-6">
-            <h1 className="display-4">{productDetail[0]?.name}</h1>
+          {/* <div className="col-md-6">
+            <h4 className="">{productDetail[0]?.name}</h4>
             <img
               width="350px"
               className="singleimage"
               src={productDetail[0]?.mainImage}
             />
+          </div> */}
+          <div className="preview col-md-6">
+            <div className="preview-pic tab-content">
+              <div className="tab-pane active" id="pic-1">
+                <img
+                  style={{ width: "350px", height: "250px" }}
+                  src={productDetail[0]?.mainImage}
+                />
+              </div>
+            </div>
+            <ul className="preview-thumbnail nav nav-tabs">
+              {productDetail[0]?.subImages.map((subimage) => {
+                return (
+                  <li className="active">
+                    <a data-target="#pic-1" data-toggle="tab">
+                      <img src={subimage} width="350px" />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
           <div className="col-md-6">
             <h3>Description</h3>
-            {/* {details.description ? details.description : "..."} */}
             <hr className="my-4" />
 
             <ul className="cart-details-list">
@@ -116,33 +137,42 @@ function ProductDetails(props) {
                 {productDetail[0]?.description}{" "}
               </li>
               <hr className="my-3" />
-              {/* <li className="m-2">
-                <b>Category: </b>{" "}
-                {productDetail[0]?.category}
-              </li> */}
+
               <hr className="my-3" />
               <li className="m-2">
-                <b>ratings: </b>{" "}
-                <span className="rating">
-                  {productDetail[0]?.avgRatings} / 5
-                </span>{" "}
+                <b>
+                  <span className="product_rating">
+                    {productDetail[0]?.avgRating > 0
+                      ? Array(Math.round(productDetail[0]?.avgRating))
+                          .fill()
+                          .map(() => <p>⭐</p>)
+                      : null}
+                  </span>
+                  Avg Ratings: {productDetail[0]?.avgRating}
+                </b>
               </li>
               <hr className="my-3" />
-              {/* <li className="m-2">
-                <b>Color: </b> {productDetail?.color}{" "}
-              </li> */}
+              <li className="m-2">
+                <b>
+                  Color: &nbsp;
+                  <span
+                    className="col-2 p-3 mb-2 text-dark"
+                    style={{
+                      backgroundColor: productDetail[0]?.color?.name,
+                    }}
+                  >
+                    {productDetail[0]?.color?.name}
+                  </span>
+                </b>
+              </li>
               <hr className="my-3" />
               <li className="m-2">
                 <b>Features: </b> {productDetail[0]?.features}
               </li>
               <hr className="my-3" />
-              {/* <li className="m-2">
-                <b>Type: </b> {details.type}{" "}
-              </li> */}
             </ul>
             <button
               id="addtocart"
-              // onClick={() => addtocart(details)}
               onClick={() => addToCart(productDetail[0]?.id)}
               className="btn btn-success"
             >

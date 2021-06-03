@@ -1,4 +1,14 @@
-var a2z = function (state, action) {
+var a2z = function (
+  state = {
+    isLoggedIn: false,
+    cart: [],
+    address: [],
+    cartUpdate: false,
+    cartTotal: 0,
+    cartTotalItems: 0,
+  },
+  action
+) {
   switch (action.type) {
     //LOGIN
     case "LOGIN": {

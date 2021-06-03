@@ -61,11 +61,11 @@ function Product(props) {
             <strong>{props.data.price}</strong>
           </p>
           <div className="product_rating">
-            {/* {Array(props.avgRating)
-            .fill()
-            .map((_) => ( */}
-            <p>⭐</p>
-            {/* ))} */}
+            {Array(Math.round(props.data.avgRating))
+              .fill()
+              .map(() => (
+                <p>⭐</p>
+              ))}
             {props.data.avgRating}
           </div>
         </div>
