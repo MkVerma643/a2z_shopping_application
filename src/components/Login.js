@@ -8,6 +8,7 @@ import { emailRegrex } from "./constants/Regrex";
 import axios from "axios";
 import { connect } from "react-redux";
 import { BASE_URL } from "./constants/Base_url";
+import { thunkLogin } from "../reduxstore/thunk";
 
 function Login(props) {
   const intialValues = { email: "", password: "" };
@@ -25,30 +26,7 @@ function Login(props) {
   const submit = () => {
     console.log(formValues);
     let apiurl = BASE_URL + `api/auth/login`;
-    axios({
-      url: apiurl,
-      method: "post",
-      data: formValues,
-    }).then(
-      (response) => {
-        console.log("response from Login API", response.data);
-        localStorage.token = response.data.data.token;
-        localStorage.email = response.data.data.email;
-        props.dispatch({
-          type: "LOGIN",
-          payload: response.data,
-        });
-        props.history.push("/");
-        // props.set(true);
-        // props.userName(user.name);
-        // console.log(apiurl);
-      },
-      (error) => {
-        console.log(formValues);
-        console.log("error from Login API", error);
-        // console.log(apiurl);
-      }
-    );
+    props.dispatch(thunkLogin(apiurl, formValues));
   };
 
   //input change handler
