@@ -1,9 +1,29 @@
-export function Login() {
+import axios from "axios";
+
+export function thunkLogin(apiurl, formValues) {
   return (dispatch, getState) => {
     //tasks
     var state = getState();
-    dispatch({
-      type: "LOGIN",
-    });
+    console.log("thunk login state", state);
+
+    axios({
+      url: apiurl,
+      method: "post",
+      data: formValues,
+    }).then(
+      (response) => {
+        console.log("response from Login API", response.data);
+        localStorage.token = response.data.data.token;
+        localStorage.email = response.data.data.email;
+        dispatch({
+          type: "LOGIN",
+          payload: response.data,
+        });
+      },
+      (error) => {
+        console.log(formValues);
+        console.log("error from Login API", error);
+      }
+    );
   };
 }
